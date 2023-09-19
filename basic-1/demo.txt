@@ -1,0 +1,13 @@
+What is MEAN / MERN Stack Development:
+
+MEAN / MERN is a collection of JavaScript-based technologies. In MEAN Stack we use MongoDB, Express.js, Angular, and Node.js, and in MERN Stack we use MongoDB, Express.js, React JS, and Node.js to develop web applications.
+
+MongoDB is a free and open-source cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with schemas.
+
+Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.
+
+Angular is a TypeScript-based open-source front-end web application framework developed by Google.
+
+React is an open-source, front end, JavaScript library for building user interfaces or UI components. It is developed and maintained by Facebook.
+
+Node.js is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code server-side.
