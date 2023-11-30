@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const productController = require('./controller/product');
+const productRouter = require('./routes/product');
 
 const server = express();
 
@@ -8,11 +8,11 @@ const server = express();
 
 //BodyParser
 server.use(express.json());
-server.use(express.urlencoded());
-
+// server.use(express.urlencoded());
 server.use(morgan("default"));
+server.use(express.static('public'));
 
-// server.use(express.static('public'));
+server.use('/api', productRouter.router);
 
 //This as an application level middleware and this is applicable for everything
 // server.use((req, res, next) => {
@@ -67,29 +67,6 @@ server.patch('/', (req, res) => {
 //     // res.sendFile('E:/My Documents2/Node JS University 2023/Coder Dost/learn-nodejs/index.html');
 // })
 
-//Start API using REST API standard [ C R U D ] ===========================================
-
-// Create POST /products
-server.post('/products', productController.createProduct);
-
-//Read GET /products
-//This will return all the products
-server.get("/products", productController.getAllProducts);
-
-//Read GET /products/:id
-//This will return all the product
-server.get("/products/:id", productController.getProduct);
-
-//Update PUT /products/:id
-server.put("/products/:id", productController.replaceProduct);
-
-//Update PATCH /products/:id
-server.patch("/products/:id", productController.updateProduct);
-
-//Delete DELETE /products/:id
-server.delete("/products/:id", productController.deleteProduct);
-
-// End API using REST API standard [ C R U D ] ===========================================
 
 
 //Listening Port
