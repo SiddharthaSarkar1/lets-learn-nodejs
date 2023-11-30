@@ -1,11 +1,6 @@
-const fs = require('fs');
 const express = require('express');
 const morgan = require('morgan');
-
-const index = fs.readFileSync('index.html', 'utf-8');
-const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
-
-const products = data.products;
+const productController = require('./controller/product');
 
 const server = express();
 
@@ -64,70 +59,40 @@ server.patch('/', (req, res) => {
     res.json({type: 'PATCH'});
 })
 
-server.get('/test', (req, res) => {
-    //.res.sendStatus(404);
-    // res.json(products);
-    // res.sendStatus(201).send("hello");
-    //To use send file method we have to give absolute path
-    // res.sendFile('E:/My Documents2/Node JS University 2023/Coder Dost/learn-nodejs/index.html');
-})
+// server.get('/test', (req, res) => {
+//     //.res.sendStatus(404);
+//     // res.json(products);
+//     // res.sendStatus(201).send("hello");
+//     //To use send file method we have to give absolute path
+//     // res.sendFile('E:/My Documents2/Node JS University 2023/Coder Dost/learn-nodejs/index.html');
+// })
 
 //Start API using REST API standard [ C R U D ] ===========================================
 
 // Create POST /products
-server.post('/products', (req, res) => {
-    const newProduct = req.body;
-    products.push(newProduct);
-    res.status(201).json(newProduct);
-    //res.json({Message: 'Successfully added a new product.'});
-})
-
+server.post('/products', productController.createProduct);
 
 //Read GET /products
 //This will return all the products
-server.get("/products", (req, res) => {
-    res.status(200).json(products);
-});
+server.get("/products", productController.getAllProducts);
 
 //Read GET /products/:id
 //This will return all the product
-server.get("/products/:id", (req, res) => {
-    const id = +req.params.id; //Converting the string id to numeric id
-    const product = products.find((product) => product.id == id )
-    res.status(200).json(product);
-});
+server.get("/products/:id", productController.getProduct);
 
 //Update PUT /products/:id
-server.put("/products/:id", (req, res) => {
-    const id = +req.params.id; //Converting the string id to numeric id
-    const productIndex = products.findIndex((product) => product.id === id );
-    products.splice(productIndex, 1, {...req.body, id: id});
-    res.status(201).json({ Message: "Product is updated successfully."});
-});
+server.put("/products/:id", productController.replaceProduct);
 
 //Update PATCH /products/:id
-server.patch("/products/:id", (req, res) => {
-    const id = +req.params.id; //Converting the string id to numeric id
-    const productIndex = products.findIndex((product) => product.id === id );
-    const product = products[productIndex];
-    products.splice(productIndex, 1, {...product, ...req.body});
-    res.status(201).json({ Message: `Product at index ${productIndex + 1} is updated successfully.`});
-});
+server.patch("/products/:id", productController.updateProduct);
 
 //Delete DELETE /products/:id
-server.delete("/products/:id", (req, res) => {
-    const id = +req.params.id; //Converting the string id to numeric id
-    const productIndex = products.findIndex((product) => product.id === id );
-    const product = products[productIndex];
-    products.splice(productIndex, 1);
-    res.status(200).json(product);
-});
+server.delete("/products/:id", productController.deleteProduct);
 
 // End API using REST API standard [ C R U D ] ===========================================
 
 
 //Listening Port
-
 server.listen(8800, () => {
     console.log("Server Started!!!!");
 });
