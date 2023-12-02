@@ -1,20 +1,35 @@
-const express = require('express');
-const morgan = require('morgan');
-const productRouter = require('./routes/product');
-const userRouter = require('./routes/user');
+const express = require("express");
+const morgan = require("morgan");
+// Mongoose Require
+const mongoose = require("mongoose");
+
+
+const productRouter = require("./routes/product");
+const userRouter = require("./routes/user");
 
 const server = express();
+//DB connection code
+//Mongoose Connect
+main().catch((err) => console.log(err));
+
+async function main() {
+  await mongoose.connect("mongodb://127.0.0.1:27017/ecommerce_sid");
+  console.log("Database Connected!");
+  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+}
+
+
+
 
 //MIDDLEWARE
-
 //BodyParser
 server.use(express.json());
 // server.use(express.urlencoded());
 server.use(morgan("default"));
-server.use(express.static('public'));
+server.use(express.static("public"));
 
-server.use('/products', productRouter.router);
-server.use('/users', userRouter.router);
+server.use("/products", productRouter.router);
+server.use("/users", userRouter.router);
 
 //This as an application level middleware and this is applicable for everything
 // server.use((req, res, next) => {
@@ -24,42 +39,42 @@ server.use('/users', userRouter.router);
 
 //Route level middleware
 const auth = (req, res, next) => {
-    // console.log(req.query);
-    if(req.body.password == '123') {
-        next();
-    }else {
-        res.sendStatus(401);
-    }
-}
+  // console.log(req.query);
+  if (req.body.password == "123") {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
+};
 
 // server.use(auth);
 
 // API - Endpoint
-server.get('/', auth, (req, res) => {
-    console.log(req.params);
-    res.json({type: 'GET'});
-})
+server.get("/", auth, (req, res) => {
+  console.log(req.params);
+  res.json({ type: "GET" });
+});
 // adding dynamic parameters
-server.get('/product/:id', (req, res) => {
-    console.log(req.params);
-    res.json({type: 'GET'});
-})
+server.get("/product/:id", (req, res) => {
+  console.log(req.params);
+  res.json({ type: "GET" });
+});
 
-server.post('/', auth, (req, res) => {
-    res.json({type: 'POST'});
-})
+server.post("/", auth, (req, res) => {
+  res.json({ type: "POST" });
+});
 
-server.put('/', (req, res) => {
-    res.json({type: 'PUT'});
-})
+server.put("/", (req, res) => {
+  res.json({ type: "PUT" });
+});
 
-server.delete('/', (req, res) => {
-    res.json({type: 'DELETE'});
-})
+server.delete("/", (req, res) => {
+  res.json({ type: "DELETE" });
+});
 
-server.patch('/', (req, res) => {
-    res.json({type: 'PATCH'});
-})
+server.patch("/", (req, res) => {
+  res.json({ type: "PATCH" });
+});
 
 // server.get('/test', (req, res) => {
 //     //.res.sendStatus(404);
@@ -69,9 +84,7 @@ server.patch('/', (req, res) => {
 //     // res.sendFile('E:/My Documents2/Node JS University 2023/Coder Dost/learn-nodejs/index.html');
 // })
 
-
-
 //Listening Port
 server.listen(8800, () => {
-    console.log("Server Started!!!!");
+  console.log("Server Started!!!!");
 });
