@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 // Mongoose Require
 const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
 
 
 const productRouter = require("./routes/product");
@@ -23,6 +24,20 @@ async function main() {
 
 //MIDDLEWARE
 //BodyParser
+server.use((req, res, next) => {
+  const token = req.get('Authorization').split('Bearer ')[1];
+  // const token = req.get('Authorization');
+  console.log(token);
+  var decoded = jwt.verify(token, 'Shhhh');
+  console.log(decoded);
+  if(decoded.email) {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
+});
+
+
 server.use(express.json());
 // server.use(express.urlencoded());
 server.use(morgan("default"));

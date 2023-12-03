@@ -2,15 +2,17 @@ const fs = require('fs');
 // const index = fs.readFileSync('index.html', 'utf-8');
 // const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
 // const users = data.users;
-
+const mongoose = require("mongoose");
 const model = require("../model/user");
 const User = model.User;
+const jwt = require('jsonwebtoken');
 
 //MVC model-view-controller
 exports.createUser = async (req, res) => {
-
     try {
         const user = new User(req.body);
+        var token = jwt.sign({ email: req.body.email }, 'Shhhh');
+        user.token = token;
         const output = await user.save();
         console.log(output);
         return res
