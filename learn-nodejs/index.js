@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 
 
+const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
 const userRouter = require("./routes/user");
 
@@ -24,7 +25,7 @@ async function main() {
 
 //MIDDLEWARE
 //BodyParser
-server.use((req, res, next) => {
+const userAuth = (req, res, next) => {
   const token = req.get('Authorization').split('Bearer ')[1];
   // const token = req.get('Authorization');
   console.log(token);
@@ -35,7 +36,7 @@ server.use((req, res, next) => {
   } else {
     res.sendStatus(401);
   }
-});
+};
 
 
 server.use(express.json());
@@ -43,8 +44,9 @@ server.use(express.json());
 server.use(morgan("default"));
 server.use(express.static("public"));
 
-server.use("/products", productRouter.router);
-server.use("/users", userRouter.router);
+server.use("/auth", authRouter.router);
+server.use("/products", userAuth, productRouter.router);
+server.use("/users", userAuth, userRouter.router);
 
 //This as an application level middleware and this is applicable for everything
 // server.use((req, res, next) => {
