@@ -4,6 +4,9 @@ const morgan = require("morgan");
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 
+//Require .env file
+require('dotenv').config();
+
 
 const authRouter = require("./routes/auth");
 const productRouter = require("./routes/product");
@@ -29,6 +32,7 @@ const userAuth = (req, res, next) => {
   const token = req.get('Authorization').split('Bearer ')[1];
   // const token = req.get('Authorization');
   console.log(token);
+  console.log(process.env.SECRET_KEY);
   var decoded = jwt.verify(token, 'Shhhh');
   console.log(decoded);
   if(decoded.email) {

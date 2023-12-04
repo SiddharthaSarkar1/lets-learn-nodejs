@@ -1,5 +1,6 @@
 const fs = require("fs");
 const model = require("../model/product");
+const { query } = require("express");
 const Product = model.Product;
 // const index = fs.readFileSync('index.html', 'utf-8');
 // const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
@@ -25,8 +26,14 @@ exports.createProduct = async (req, res) => {
 // get all products using id  url http://localhost:8800/products/
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.status(200).json(products);
+    // const products = await Product.find();
+    // Sorting products in ascending order
+    let products = Product.find();
+    // const sortedProductsAse = await products.sort({ price: 1 }).exec();
+    const sortedProductsDesc = await products.sort({ price: -1 }).exec();
+    // res.status(200).json(products);
+    // res.status(200).json(sortedProductsAse);
+    res.status(200).json(sortedProductsDesc);
   } catch (error) {
     console.log(error);
     return res.sendStatus(400);
