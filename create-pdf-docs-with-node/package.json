@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "fd": "^0.0.3",
+    "jspdf": "^3.0.4",
+    "jspdf-autotable": "^5.0.2",
+    "nodemon": "^3.1.11",
+    "path": "^0.12.7",
+    "url": "^0.11.4"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "name": "create-pdf-docs-with-node",
+  "description": "> npm install express jspdf fd path url jspdf-autotable nodemon",
+  "version": "1.0.0",
+  "main": "server.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
